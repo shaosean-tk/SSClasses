@@ -22,31 +22,7 @@
    <SourceLine>// such as changing the file’s last modification date. Finally, you can pass URL objects</SourceLine>
    <SourceLine>// to other APIs to retrieve the contents of those URLs.</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>DIM aRegEx As NEW RegEx</SourceLine>
-   <SourceLine>aRegEx.SearchPattern = "^((?P&lt;schema&gt;[^:\/?#]+):)?(\/?\/?(?P&lt;authority&gt;[^\/?#]*))?(?P&lt;path&gt;[^?#]*)(\?(?P&lt;query&gt;[^#]*))?(#(?P&lt;fragment&gt;.*))?$"</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>DIM match As RegExMatch</SourceLine>
-   <SourceLine>match = aRegEx.Search(URL)</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>DIM count As Integer = match.SubExpressionCount</SourceLine>
-   <SourceLine>if (count &gt; 0) then</SourceLine>
-   <SourceLine>me.mScheme = match.SubExpressionString(2)  ' scheme</SourceLine>
-   <SourceLine>me.mResourceSpecifier = match.SubExpressionString(3)</SourceLine>
-   <SourceLine>me.ParseAuthority match.SubExpressionString(4)  ' authority</SourceLine>
-   <SourceLine>me.mPath = match.SubExpressionString(5)  ' path</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>if (count &gt; 6) then</SourceLine>
-   <SourceLine>me.mResourceSpecifier = me.mResourceSpecifier + match.SubExpressionString(6)</SourceLine>
-   <SourceLine>me.mQuery = match.SubExpressionString(7)  ' query</SourceLine>
-   <SourceLine>end if</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>if (count = 10) then</SourceLine>
-   <SourceLine>me.mResourceSpecifier = me.mResourceSpecifier + match.SubExpressionString(8)</SourceLine>
-   <SourceLine>me.mFragment = match.SubExpressionString(9)  ' fragment</SourceLine>
-   <SourceLine>end if</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>me.mAbsoluteString = URL</SourceLine>
-   <SourceLine>end if</SourceLine>
+   <SourceLine>me.ParseURL URL</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -129,6 +105,69 @@
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
   <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(path As FolderItem)</SourceLine>
+   <SourceLine>if (path &lt;&gt; Nil) then</SourceLine>
+   <SourceLine>me.mIsFileURL = TRUE</SourceLine>
+   <SourceLine>me.ParseURL path.URLPath</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>path As FolderItem</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ParseURL(URL As String)</SourceLine>
+   <SourceLine>if (Trim(URL) &lt;&gt; "") then</SourceLine>
+   <SourceLine>DIM aRegEx As NEW RegEx</SourceLine>
+   <SourceLine>aRegEx.SearchPattern = "^((?P&lt;schema&gt;[^:\/?#]+):)?(\/?\/?(?P&lt;authority&gt;[^\/?#]*))?(?P&lt;path&gt;[^?#]*)(\?(?P&lt;query&gt;[^#]*))?(#(?P&lt;fragment&gt;.*))?$"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM match As RegExMatch</SourceLine>
+   <SourceLine>match = aRegEx.Search(URL)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM count As Integer = match.SubExpressionCount</SourceLine>
+   <SourceLine>if (count &gt; 0) then</SourceLine>
+   <SourceLine>me.mScheme = match.SubExpressionString(2)  ' scheme</SourceLine>
+   <SourceLine>me.mResourceSpecifier = match.SubExpressionString(3)</SourceLine>
+   <SourceLine>me.ParseAuthority match.SubExpressionString(4)  ' authority</SourceLine>
+   <SourceLine>me.mPath = match.SubExpressionString(5)  ' path</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (count &gt; 6) then</SourceLine>
+   <SourceLine>me.mResourceSpecifier = me.mResourceSpecifier + match.SubExpressionString(6)</SourceLine>
+   <SourceLine>me.mQuery = match.SubExpressionString(7)  ' query</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (count = 10) then</SourceLine>
+   <SourceLine>me.mResourceSpecifier = me.mResourceSpecifier + match.SubExpressionString(8)</SourceLine>
+   <SourceLine>me.mFragment = match.SubExpressionString(9)  ' fragment</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.mAbsoluteString = URL</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>URL As String</ItemParams>
   <ItemResult></ItemResult>
  </Method>
  <Note>
@@ -292,7 +331,9 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the fragment of a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the URL’s fragment. </SourceLine>
+   <SourceLine>// If the receiver does not conform to RFC 1808, this property contains nil. </SourceLine>
+   <SourceLine>// For example, in the URL http://www.example.com/index.html#jumpLocation, the fragment identifier is jumpLocation.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return me.mFragment</SourceLine>
    <SourceLine>End Get</SourceLine>
@@ -320,9 +361,21 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the host of a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the host. </SourceLine>
+   <SourceLine>// For example, in the URL http://www.example.com/index.html, the host is www.example.com.</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>Return me.mHost</SourceLine>
+   <SourceLine>// If the receiver does not conform to RFC 1808, this property contains an empty string.</SourceLine>
+   <SourceLine>// The litmus test for conformance to RFC 1808 is as recommended in RFC 1808—specifically, </SourceLine>
+   <SourceLine>// whether the first two characters of resourceSpecifier are slashes (//).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM returnValue As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (Left(me.mResourceSpecifier, 2) = "//") then</SourceLine>
+   <SourceLine>returnValue = me.mHost</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
    <SourceLine>End Get</SourceLine>
   </GetAccessor>
  </Property>
@@ -376,7 +429,9 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the password of a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the password. </SourceLine>
+   <SourceLine>// If the receiver does not conform to RFC 1808, it contains nil. </SourceLine>
+   <SourceLine>// For example, in the URL http://username:password@www.example.com/index.html, the password is password.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return me.mPassword</SourceLine>
    <SourceLine>End Get</SourceLine>
@@ -432,7 +487,8 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the port number of a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the port number. </SourceLine>
+   <SourceLine>// For example, in the URL http://www.example.com:8080/index.php, the port number is 8080.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return me.mPort</SourceLine>
    <SourceLine>End Get</SourceLine>
@@ -460,9 +516,18 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the query string from a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the query string. </SourceLine>
+   <SourceLine>// If the receiver does not conform to RFC 1808, this property contains an empty string. </SourceLine>
+   <SourceLine>// For example, in the URL http://www.example.com/index.php?key1=value1&amp;key2=value2, </SourceLine>
+   <SourceLine>// the query string is key1=value1&amp;key2=value2.</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>Return me.mQuery</SourceLine>
+   <SourceLine>DIM returnValue As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (Left(me.mResourceSpecifier, 2) = "//") then</SourceLine>
+   <SourceLine>returnValue = me.mQuery</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
    <SourceLine>End Get</SourceLine>
   </GetAccessor>
  </Property>
@@ -488,7 +553,8 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the scheme of the URL</SourceLine>
+   <SourceLine>// This property contains the scheme. </SourceLine>
+   <SourceLine>// For example, in the URL http://www.example.com/index.html, the scheme is http.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return me.mScheme</SourceLine>
    <SourceLine>End Get</SourceLine>
@@ -516,7 +582,8 @@
   <GetAccessor>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Get</SourceLine>
-   <SourceLine>// Returns the user portion of a URL conforming to RFC 1808</SourceLine>
+   <SourceLine>// This property contains the user name.</SourceLine>
+   <SourceLine>// For example, in the URL ftp://username@www.example.com/, the user name is username.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return me.mUser</SourceLine>
    <SourceLine>End Get</SourceLine>
@@ -580,6 +647,46 @@
   <ItemDeclaration>mResourceSpecifier As String</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mIsFileURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mIsFileURL As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mIsFileURL As Boolean</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IsFileURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IsFileURL As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IsFileURL As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return me.mIsFileURL</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
  </Property>
  <ViewBehavior>
   <ViewProperty>
