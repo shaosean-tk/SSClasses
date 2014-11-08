@@ -170,6 +170,29 @@
   <ItemParams>URL As String</ItemParams>
   <ItemResult></ItemResult>
  </Method>
+ <Method>
+  <ItemName>Operator_Convert</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Operator_Convert() As FolderItem</SourceLine>
+   <SourceLine>DIM returnValue As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (me.mIsFileURL) then</SourceLine>
+   <SourceLine>returnValue = NEW FolderItem(me.mPath, FolderItem.PathTypeURL)</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>FolderItem</ItemResult>
+ </Method>
  <Note>
   <ItemName>Notes</ItemName>
   <Compatibility></Compatibility>
